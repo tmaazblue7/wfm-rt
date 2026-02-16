@@ -1,0 +1,37 @@
+name: CXone KPI Pull (cron)
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"   # every 2 hours UTC
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install
+        run: npm ci
+
+      - name: Run KPI pull
+        env:
+          CXONE_REGION: ${{ secrets.CXONE_REGION }}
+          CXONE_ACCESS_KEY_ID: ${{ secrets.CXONE_ACCESS_KEY_ID }}
+          CXONE_ACCESS_KEY_SECRET: ${{ secrets.CXONE_ACCESS_KEY_SECRET }}
+          USE_OIDC_DISCOVERY: ${{ secrets.USE_OIDC_DISCOVERY }}
+          ROUTE_MODE: post
+        run: npm run start
+
+      - name: Upload artifact (CSV)
+        uses: actions/upload-artifact@v4
+        with:
+          name: kpi-output
+          path: output/*.csv

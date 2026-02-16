@@ -1,0 +1,15 @@
+{
+  "name": "cxone-kpi-github",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Pull CXone Real-Time Skill KPIs by LOB groups and write CSV.",
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "echo \"(add your linter here)\""
+  },
+  "dependencies": {
+    "csv-stringify": "^6.5.0",
+    "dotenv": "^16.4.5",
+    "uuid": "^9.0.1"
+  }
+}
